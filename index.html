@@ -44,14 +44,37 @@
             border-left: 4px solid #3498db;
         }
     </style>
+        <style>
+            .login-btn {
+                padding: 10px 20px;
+                font-size: 16px;
+                cursor: pointer;
+                background-color: #ff5500;
+                color: white;
+                border: none;
+                border-radius: 5px;
+            }
+            .login-btn:hover {
+                background-color: #ff7700;
+            }
+            .warning {
+                color: red;
+                margin-top: 10px;
+            }
+            .extension-link {
+                color: blue;
+                text-decoration: underline;
+                cursor: pointer;
+            }
+        </style>
 </head>
 <body>
-    <script>
+<!--     <script>
         async function fetchResource(url) {
           const proxyUrl = 'https://cors-anywhere.herokuapp.com/'; // Public proxy (temporary use)
           const targetUrl = url; // Replace with actual resource
           try {
-            const response = await fetch(proxyUrl + targetUrl);
+            const response = await fetch(proxyUrl + encodeURI(targetUrl));
             const data = await response.text(); // or .json() if applicable
             console.log(data);
             // Use the data as needed
@@ -74,7 +97,7 @@
 
     <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1050861835&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/highthere-music" title="HighThere" target="_blank" style="color: #cccccc; text-decoration: none;">HighThere</a> · <a href="https://soundcloud.com/highthere-music/royal" title="Royal" target="_blank" style="color: #cccccc; text-decoration: none;">Royal</a></div>
 
-    <iframe src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2Fcarpenter.brut%2Fposts%2Fpfbid02GMMs6PmDTGsRahS8RwQRtC5Z6MYXDh2P8vzjEMa6cS1QyUc5KbTk3Vxc1sbu4Ckzl&show_text=true&width=500" width="500" height="481" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+    
 
     <iframe style="border: 0; width: 350px; height: 470px;" src="https://bandcamp.com/EmbeddedPlayer/album=3794815875/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/transparent=true/" seamless><a href="https://neurofunkgrid.bandcamp.com/album/gigerbeatz-remixed-ep">Gigerbeatz Remixed EP by AnatomiX</a></iframe>
 
@@ -85,6 +108,95 @@
 <script async src="//www.instagram.com/embed.js"></script>
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/7cpQSm8NNC8?si=0wrrp5KmVz4E8rU9" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+ -->
+ <iframe src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2Fcarpenter.brut%2Fposts%2Fpfbid02GMMs6PmDTGsRahS8RwQRtC5Z6MYXDh2P8vzjEMa6cS1QyUc5KbTk3Vxc1sbu4Ckzl&show_text=true&width=500" width="500" height="481" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+ <iframe id="facebook-post" width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1050861835&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/highthere-music" title="HighThere" target="_blank" style="color: #cccccc; text-decoration: none;">HighThere</a> · <a href="https://soundcloud.com/highthere-music/royal" title="Royal" target="_blank" style="color: #cccccc; text-decoration: none;">Royal</a></div>
+
+
+<button class="login-btn" onclick="handleLogin()">Login with SoundCloud</button>
+    <div id="extensionStatus"></div>
+
+    <script>
+        // Check if extension is installed
+        const extensionId = 'soundcloud-localstorage-grabber'; // Unique identifier
+        let isExtensionInstalled = false;
+
+        // Function to detect extension
+        function checkExtension() {
+            if (typeof chrome !== 'undefined' && chrome.runtime) {
+                // Try to communicate with the extension
+                chrome.runtime.sendMessage(extensionId, { ping: true }, (response) => {
+                    if (chrome.runtime.lastError) {
+                        showExtensionNotFound();
+                    } else {
+                        isExtensionInstalled = true;
+                        document.getElementById('extensionStatus').innerHTML = 
+                            '<p style="color: green;">Extension detected! Ready to proceed.</p>';
+                    }
+                });
+            } else {
+                showExtensionNotFound();
+            }
+        }
+
+        function showExtensionNotFound() {
+            document.getElementById('extensionStatus').innerHTML = `
+                <p class="warning">SoundCloud LocalStorage Grabber extension not found.</p>
+                <p>Download and install the extension from: 
+                    <a class="extension-link" 
+                       href="https://github.com/yourusername/soundcloud-extension/archive/refs/heads/main.zip" 
+                       target="_blank">
+                        GitHub Repository
+                    </a>
+                </p>
+                <p>Instructions: Unzip, go to chrome://extensions/, enable Developer Mode, 
+                and load the unzipped folder as an unpacked extension.</p>
+            `;
+        }
+
+        function handleLogin() {
+            if (!isExtensionInstalled) {
+                alert('Please install the extension first!');
+                return;
+            }
+
+            const confirmed = confirm("Do you want to login with SoundCloud?");
+            
+            if (confirmed) {
+                const popup = window.open(
+                    'https://soundcloud.com',
+                    'soundcloudPopup',
+                    'width=600,height=400'
+                );
+                
+                if (!popup) {
+                    alert('Please allow popups for this website');
+                    return;
+                }
+
+                // Listen for extension messages
+                chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+                    if (message.type === 'localStorageReceived') {
+                        const clientId = message.data['client_id'] || 'Not found';
+                        console.log('SoundCloud client_id from localStorage:', clientId);
+                        console.log('Full localStorage:', message.data);
+                        alert('Check console for client_id and full localStorage data');
+                    }
+                });
+
+                const checkPopup = setInterval(() => {
+                    if (popup.closed) {
+                        clearInterval(checkPopup);
+                        // Request localStorage data via extension
+                        chrome.runtime.sendMessage(extensionId, { request: 'getLocalStorage' });
+                    }
+                }, 500);
+            }
+        }
+
+        // Check extension on page load
+        window.onload = checkExtension;
+    </script>
 
     <h1>Proxy Server Simulation</h1>
     <p>This page simulates a proxy server that was originally built with Express.js. The actual server would run at <code>http://localhost:3006</code>, but this is a static HTML representation.</p>
