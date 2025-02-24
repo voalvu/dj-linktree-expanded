@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Proxy Server Simulation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        h1 {
+            color: #2c3e50;
+        }
+        .endpoint {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+        .endpoint h2 {
+            margin-top: 0;
+            color: #2980b9;
+        }
+        code {
+            background-color: #ecf0f1;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        .example {
+            margin-top: 10px;
+            font-style: italic;
+            color: #7f8c8d;
+        }
+        .response {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #ecf0f1;
+            border-left: 4px solid #3498db;
+        }
+    </style>
+</head>
+<body>
+    <h1>Proxy Server Simulation</h1>
+    <p>This page simulates a proxy server that was originally built with Express.js. The actual server would run at <code>http://localhost:3006</code>, but this is a static HTML representation.</p>
+
+    <!-- Simulated /cors/:url Endpoint -->
+    <div class="endpoint">
+        <h2>GET /cors/:url</h2>
+        <p>Fetches data from a provided URL and returns it. The URL is passed as a parameter, decoded, and fetched. The response is sent as JSON or text based on the content type.</p>
+        <p><strong>Example Request:</strong> <code>/cors/https%3A%2F%2Fwww.example.com</code></p>
+        <div class="example">
+            This would fetch content from <a href="https://www.example.com" target="_blank">https://www.example.com</a>.
+        </div>
+        <div class="response">
+            <strong>Simulated Response (Text Example):</strong><br>
+            &lt;!DOCTYPE html&gt;&lt;html&gt;... (HTML content from example.com)
+        </div>
+        <div class="response">
+            <strong>Simulated Error Response:</strong><br>
+            { "error": "Failed to fetch data" }
+        </div>
+    </div>
+
+    <!-- Simulated /soundcloud/:url Endpoint -->
+    <div class="endpoint">
+        <h2>GET /soundcloud/:url</h2>
+        <p>Fetches data from a SoundCloud URL provided as a parameter. The response is returned as JSON or text based on the content type.</p>
+        <p><strong>Example Request:</strong> <code>/soundcloud/https%3A%2F%2Fsoundcloud.com%2Fsome_artist</code></p>
+        <div class="example">
+            This would fetch content from <a href="https://soundcloud.com/some_artist" target="_blank">https://soundcloud.com/some_artist</a>.
+        </div>
+        <div class="response">
+            <strong>Simulated Response (Text Example):</strong><br>
+            &lt;!DOCTYPE html&gt;&lt;html&gt;... (HTML content from SoundCloud page)
+        </div>
+        <div class="response">
+            <strong>Simulated Error Response:</strong><br>
+            { "error": "Failed to fetch data" }
+        </div>
+    </div>
+
+    <p><strong>Note:</strong> This is a static HTML page and cannot actually fetch data or run a server. The original code requires Node.js, Express, and a runtime environment to function.</p>
+</body>
+</html>
