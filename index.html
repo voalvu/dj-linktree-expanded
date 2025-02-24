@@ -127,8 +127,12 @@
                 // Try to communicate with the extension
                 chrome.runtime.sendMessage(extensionId, { ping: true }, (response) => {
                     if (chrome.runtime.lastError) {
+                        console.error('Error:', chrome.runtime.lastError.message);
+
                         showExtensionNotFound();
                     } else {
+                        console.log('Response:', response);
+
                         isExtensionInstalled = true;
                         document.getElementById('extensionStatus').innerHTML = 
                             '<p style="color: green;">Extension detected! Ready to proceed.</p>';
